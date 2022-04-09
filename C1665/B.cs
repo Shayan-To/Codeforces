@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Utils;
 
 using static Utils.Commons;
 
 // #util Commons
+// #util AutoDictionary
 
 namespace C1665
 {
@@ -13,19 +14,14 @@ namespace C1665
     {
         public static async Task Main()
         {
-            foreach (var _ in Enumerable.Range(0, await In.ReadIntAsync()))
+            await foreach (var n in In.ReadIntListAsync(await In.ReadIntAsync()))
             {
-                var n = await In.ReadIntAsync();
-                var dic = new Dictionary<int, int>();
-                foreach (var ii in Enumerable.Range(0, n))
+                var dic = new AutoDictionary<int, int>();
+                await foreach (var i in In.ReadIntListAsync(n))
                 {
-                    var i = await In.ReadIntAsync();
-                    if (!dic.ContainsKey(i))
-                    {
-                        dic[i] = 0;
-                    }
                     dic[i] += 1;
                 }
+
                 var count = dic.Max(kv => kv.Value);
                 var steps = 0;
                 while (count < n)

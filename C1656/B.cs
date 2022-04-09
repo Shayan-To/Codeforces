@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Utils;
 
 using static Utils.Commons;
 
@@ -14,19 +11,14 @@ namespace C1656
     {
         public static async Task Main()
         {
-            foreach (var ti in Enumerable.Range(0, await In.ReadIntAsync()))
+            await foreach (var n in In.ReadIntListAsync(await In.ReadIntAsync()))
             {
-                var n = await In.ReadIntAsync();
                 var k = await In.ReadIntAsync();
-                var l = new List<int>();
-                foreach (var i in Enumerable.Range(0, n))
-                {
-                    l.Add(await In.ReadIntAsync());
-                }
+                var l = await In.ReadIntListAsync(n).ToListAsync();
                 l.Sort();
 
                 var bl = false;
-                foreach (var i in Enumerable.Range(0, l.Count))
+                foreach (var i in l.Count.Range())
                 {
                     int j = l.BinarySearch(i, l.Count - i, l[i] + k, null);
                     if (j >= 0)
