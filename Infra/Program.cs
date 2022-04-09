@@ -53,7 +53,11 @@ namespace Infra
 
             if ((mode & Mode.Generate) == Mode.Generate)
             {
-                if (Config.Generation.ClearRoot && Directory.Exists(Paths.GenerationRoot))
+                if (!Directory.Exists(Paths.GenerationRoot))
+                {
+                    Directory.CreateDirectory(Paths.GenerationRoot);
+                }
+                if (Config.Generation.ClearRoot)
                 {
                     foreach (var d in Directory.EnumerateDirectories(Paths.GenerationRoot))
                     {
@@ -63,10 +67,6 @@ namespace Infra
                     {
                         File.Delete(f);
                     }
-                }
-                if (!Directory.Exists(Paths.GenerationRoot))
-                {
-                    Directory.CreateDirectory(Paths.GenerationRoot);
                 }
 
                 if (mode == Mode.GenerateAll)
