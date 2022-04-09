@@ -13,35 +13,35 @@ namespace Utils
         {
         }
 
-        public void Heapify(IList<T> List, int Count, int Index)
+        public void SlideDown(IList<T> list, int count, int index)
         {
             while (true)
             {
-                var MinIndex = LeftChild(Index);
-                if (MinIndex >= Count)
+                var minIndex = LeftChild(index);
+                if (minIndex >= count)
                 {
                     break;
                 }
 
-                var Min = List[MinIndex];
-                var I = RightChild(Index);
-                T T;
-                if (I < Count)
+                var min = list[minIndex];
+                var i = RightChild(index);
+                T t;
+                if (i < count)
                 {
-                    T = List[I];
-                    if (Comparer.Compare(T, Min) < 0)
+                    t = list[i];
+                    if (Comparer.Compare(t, min) < 0)
                     {
-                        MinIndex = I;
-                        Min = T;
+                        minIndex = i;
+                        min = t;
                     }
                 }
 
-                T = List[Index];
-                if (Comparer.Compare(Min, T) < 0)
+                t = list[index];
+                if (Comparer.Compare(min, t) < 0)
                 {
-                    List[Index] = Min;
-                    List[MinIndex] = T;
-                    Index = MinIndex;
+                    list[index] = min;
+                    list[minIndex] = t;
+                    index = minIndex;
                 }
                 else
                 {
@@ -50,31 +50,31 @@ namespace Utils
             }
         }
 
-        public void MakeHeap(IList<T> List, int Count)
+        public void MakeHeap(IList<T> list, int count)
         {
-            for (var I = Parent(Count - 1); I >= 0; I--)
+            for (var i = Parent(count - 1); i >= 0; i -= 1)
             {
-                Heapify(List, Count, I);
+                SlideDown(list, count, i);
             }
         }
 
-        public void BubbleUp(IList<T> List, int Count, int Index)
+        public void BubbleUp(IList<T> list, int index)
         {
             while (true)
             {
-                if (Index == 0)
+                if (index == 0)
                 {
                     break;
                 }
 
-                var T = List[Index];
-                var PI = Parent(Index);
-                var P = List[PI];
-                if (Comparer.Compare(P, T) > 0)
+                var t = list[index];
+                var pi = Parent(index);
+                var p = list[pi];
+                if (Comparer.Compare(p, t) > 0)
                 {
-                    List[PI] = T;
-                    List[Index] = P;
-                    Index = PI;
+                    list[pi] = t;
+                    list[index] = p;
+                    index = pi;
                 }
                 else
                 {
@@ -83,19 +83,19 @@ namespace Utils
             }
         }
 
-        public static int Parent(int Index)
+        public static int Parent(int index)
         {
-            return (Index - 1) / 2;
+            return (index - 1) / 2;
         }
 
-        public static int LeftChild(int Index)
+        public static int LeftChild(int index)
         {
-            return 2 * Index + 1;
+            return 2 * index + 1;
         }
 
-        public static int RightChild(int Index)
+        public static int RightChild(int index)
         {
-            return 2 * Index + 2;
+            return 2 * index + 2;
         }
 
         private readonly IComparer<T> Comparer;

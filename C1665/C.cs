@@ -50,7 +50,7 @@ namespace C1665
                 {
                     s += 1;
                     list[0] -= 1;
-                    heap.Heapify(list, list.Length, 0);
+                    heap.SlideDown(list, list.Length, 0);
                 }
 
                 OutLine($"{n + s}");

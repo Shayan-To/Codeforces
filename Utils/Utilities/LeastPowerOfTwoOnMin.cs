@@ -2,31 +2,31 @@ namespace Utils
 {
     public static partial class Utilities
     {
-        public static int LeastPowerOfTwoOnMin(int Min)
+        public static int LeastPowerOfTwoOnMin(int min)
         {
-            if (Min < 1)
+            if (min < 1)
             {
                 return 1;
             }
 
-            // If Min is a power of two, we should return Min, otherwise, Min * 2
-            var T = (Min - 1) & Min;
-            if (T == 0)
+            // If `min` is a power of two, we should return `min`, otherwise, `min * 2`.
+            var t = (min - 1) & min;
+            if (t == 0)
             {
-                return Min;
+                return min;
             }
 
-            Min = T;
+            min = t;
 
             while (true)
             {
-                T = (Min - 1) & Min;
-                if (T == 0)
+                t = (min - 1) & min;
+                if (t == 0)
                 {
-                    return Min << 1;
+                    return min << 1;
                 }
 
-                Min = T;
+                min = t;
             }
         }
     }
