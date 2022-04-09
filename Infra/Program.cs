@@ -5,27 +5,61 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Utils;
 
 namespace Infra
 {
     public static class Program
     {
-        public static async Task Main()
+        public static async Task Main(string[] args)
         {
             System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
 
-            if ((Config.Mode & Mode.Generate) == Mode.Generate)
+            var modes = new Dictionary<string, Mode>(StringComparer.InvariantCultureIgnoreCase);
+            foreach (var m in (Mode[])Enum.GetValues(typeof(Mode)))
+            {
+                var name = m.ToString();
+                modes[name] = m;
+                modes[Regex.Replace(name, "[a-z]+", "")] = m;
+            }
+
+            var mode = Config.DefaultMode;
+            var solution = default(Type);
+
+            foreach (var arg in args)
+            {
+                if (modes.TryGetValue(arg, out var m))
+                {
+                    mode = m;
+                    continue;
+                }
+                if (Type.GetType(arg.Replace('-', '.'), false, true) is { } s)
+                {
+                    solution = s;
+                    continue;
+                }
+                Verify.Fail($"Invalid argument '{arg}'.");
+            }
+
+            Console.WriteLine($"Mode: {mode}");
+            if (solution != null)
+            {
+                Console.WriteLine($"Solution: {solution.Namespace}.{solution.Name}");
+            }
+            Console.WriteLine();
+
+            if ((mode & Mode.Generate) == Mode.Generate)
             {
                 if (Config.Generation.ClearRoot)
                 {
-                    if (Directory.Exists(Paths.GenerationRoot))
+                    foreach (var d in Directory.EnumerateDirectories(Paths.GenerationRoot))
                     {
-                        Directory.Delete(Paths.GenerationRoot, true);
+                        Directory.Delete(d, true);
                     }
-                    if (File.Exists(Paths.GenerationRoot))
+                    foreach (var f in Directory.EnumerateFiles(Paths.GenerationRoot))
                     {
-                        File.Delete(Paths.GenerationRoot);
+                        File.Delete(f);
                     }
                 }
                 if (!Directory.Exists(Paths.GenerationRoot))
@@ -33,25 +67,25 @@ namespace Infra
                     Directory.CreateDirectory(Paths.GenerationRoot);
                 }
 
-                if (Config.Mode == Mode.GenerateAll)
+                if (mode == Mode.GenerateAll)
                 {
-                    foreach (var solution in Assembly.GetEntryAssembly()!.GetTypes().Where(t => Regex.IsMatch(t.FullName, @"^C\d+\.[A-Z]$")))
+                    foreach (var sol in Assembly.GetEntryAssembly()!.GetTypes().Where(t => Regex.IsMatch(t.FullName, @"^C\d+\.[A-Z]$")))
                     {
-                        await GenerateForSolutionAsync(solution);
+                        await GenerateForSolutionAsync(sol);
                     }
                     Console.WriteLine("All sources generated.");
                 }
                 else
                 {
-                    await GenerateForSolutionAsync(Config.Solution);
+                    await GenerateForSolutionAsync(solution!);
                     Console.WriteLine("Source generated.");
                 }
             }
 
-            if ((Config.Mode & Mode.Run) == Mode.Run)
+            if ((mode & Mode.Run) == Mode.Run)
             {
                 Console.WriteLine("Running...");
-                var res = Config.Solution.GetMethod("Main", BindingFlags.Static | BindingFlags.Public)!.Invoke(null, null);
+                var res = solution!.GetMethod("Main", BindingFlags.Static | BindingFlags.Public)!.Invoke(null, null);
                 if (res is Task t)
                 {
                     await t;

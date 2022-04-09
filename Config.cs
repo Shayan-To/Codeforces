@@ -4,12 +4,11 @@ namespace Infra
 {
     public static class Config
     {
-        public static readonly Type Solution = typeof(C282.A);
-        public static readonly Mode Mode = Mode.GenerateAndRun;
+        public static readonly Mode DefaultMode = Mode.GenerateAndRun;
         public static class Generation
         {
             public static readonly bool ClearRoot = true;
-            public static string GetFileName(Type sol) => $"{sol.Namespace}-{sol.Name}";
+            public static string GetFileName(Type sol) => $"{sol.Namespace}.{sol.Name}".Replace('.', '-');
         }
     }
 
