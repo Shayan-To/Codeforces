@@ -178,10 +178,7 @@ namespace Utils
             {
                 return;
             }
-
-            var c = self[i1];
-            self[i1] = self[i2];
-            self[i2] = c;
+            (self[i2], self[i1]) = (self[i1], self[i2]);
         }
         #endregion
     }
