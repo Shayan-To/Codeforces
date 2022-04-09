@@ -10,11 +10,12 @@ namespace Utils
         public static void OutLine(string s)
         {
 #if LOCAL
+            var fg = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Green;
 #endif
             Console.Out.WriteLine(s);
 #if LOCAL
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = fg;
 #endif
         }
 

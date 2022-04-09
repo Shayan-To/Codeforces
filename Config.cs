@@ -2,7 +2,7 @@ using System;
 
 namespace Infra
 {
-    public static class Options
+    public static class Config
     {
         public static readonly Type Solution = typeof(C282.A);
         public static readonly Mode Mode = Mode.GenerateAndRun;
