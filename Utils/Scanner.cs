@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
+// #util Verify
+
 namespace Utils
 {
     public class Scanner
@@ -21,10 +23,7 @@ namespace Utils
                 BufferEnd = length;
             }
 
-            if (BufferEnd == Buffer.Length)
-            {
-                throw new Exception("Buffer too full.");
-            }
+            Verify.False(BufferEnd == Buffer.Length, "Buffer too full.");
 
             var read = await Reader.ReadAsync(Buffer, BufferEnd, Buffer.Length - BufferEnd);
             if (read == 0)

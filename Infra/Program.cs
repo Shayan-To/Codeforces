@@ -12,9 +12,12 @@ namespace Infra
     {
         public static async Task Main()
         {
-            if ((Options.Mode & Mode.Generate) == Mode.Generate)
+            System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+            System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
+
+            if ((Config.Mode & Mode.Generate) == Mode.Generate)
             {
-                if (Options.Generation.ClearRoot)
+                if (Config.Generation.ClearRoot)
                 {
                     if (Directory.Exists(Paths.GenerationRoot))
                     {
@@ -30,7 +33,7 @@ namespace Infra
                     Directory.CreateDirectory(Paths.GenerationRoot);
                 }
 
-                if (Options.Mode == Mode.GenerateAll)
+                if (Config.Mode == Mode.GenerateAll)
                 {
                     foreach (var solution in Assembly.GetEntryAssembly()!.GetTypes().Where(t => Regex.IsMatch(t.FullName, @"^C\d+\.[A-Z]$")))
                     {
@@ -40,15 +43,15 @@ namespace Infra
                 }
                 else
                 {
-                    await GenerateForSolutionAsync(Options.Solution);
+                    await GenerateForSolutionAsync(Config.Solution);
                     Console.WriteLine("Source generated.");
                 }
             }
 
-            if ((Options.Mode & Mode.Run) == Mode.Run)
+            if ((Config.Mode & Mode.Run) == Mode.Run)
             {
                 Console.WriteLine("Running...");
-                var res = Options.Solution.GetMethod("Main", BindingFlags.Static | BindingFlags.Public)!.Invoke(null, null);
+                var res = Config.Solution.GetMethod("Main", BindingFlags.Static | BindingFlags.Public)!.Invoke(null, null);
                 if (res is Task t)
                 {
                     await t;
@@ -57,7 +60,7 @@ namespace Infra
 
             async Task GenerateForSolutionAsync(Type solution)
             {
-                using var writer = new StreamWriter(Path.Combine(Paths.GenerationRoot, $"{Options.Generation.GetFileName(solution)}.cs"));
+                using var writer = new StreamWriter(Path.Combine(Paths.GenerationRoot, $"{Config.Generation.GetFileName(solution)}.cs"));
                 await GenerateForSolutionToAsync(solution, writer);
             }
 
