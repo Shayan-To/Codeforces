@@ -97,31 +97,6 @@ namespace Utils
             return result;
         }
 
-        public async Task<int> ReadIntAsync()
-        {
-            return int.Parse(await ReadWordAsync());
-        }
-
-        public async Task<long> ReadLongAsync()
-        {
-            return long.Parse(await ReadWordAsync());
-        }
-
-        public async Task<double> ReadDoubleAsync()
-        {
-            return double.Parse(await ReadWordAsync());
-        }
-
-        public async Task<float> ReadSingleAsync()
-        {
-            return float.Parse(await ReadWordAsync());
-        }
-
-        public async Task<decimal> ReadDecimalAsync()
-        {
-            return decimal.Parse(await ReadWordAsync());
-        }
-
         private readonly char[] Buffer = new char[4096];
         private int BufferStart = 0;
         private int BufferEnd = 0;
