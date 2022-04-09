@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-// #util Utilities/LeastPowerOfTwoOnMin
+// #util MathI
 
 namespace Utils
 {
@@ -17,7 +17,7 @@ namespace Utils
         /// </returns>
         public static (int Index, int Count) BinarySearch<T, TValue>(this IReadOnlyList<T> self, TValue value, Func<T, TValue, int> comp)
         {
-            var count = LeastPowerOfTwoOnMin(self.Count + 1) / 2;
+            var count = MathI.LeastPowerOfTwoOnMin(self.Count + 1) / 2;
             var offset1 = -1;
 
             while (count > 0)
