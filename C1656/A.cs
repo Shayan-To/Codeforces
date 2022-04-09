@@ -1,6 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Utils;
 
 using static Utils.Commons;
 
@@ -12,23 +11,20 @@ namespace C1656
     {
         public static async Task Main()
         {
-            foreach (var ti in Enumerable.Range(0, await In.ReadIntAsync()))
+            await foreach (var n in In.ReadIntListAsync(await In.ReadIntAsync()))
             {
-                var n = await In.ReadIntAsync();
                 var (min, minI) = (int.MaxValue, -1);
                 var (max, maxI) = (int.MinValue, -1);
-                foreach (var i in Enumerable.Range(0, n))
+
+                await foreach (var (x, i) in In.ReadIntListAsync(n).SelectAsync((x, i) => (x, i)))
                 {
-                    var x = await In.ReadIntAsync();
                     if (min > x)
                     {
-                        min = x;
-                        minI = i;
+                        (min, minI) = (x, i);
                     }
                     if (max < x)
                     {
-                        max = x;
-                        maxI = i;
+                        (max, maxI) = (x, i);
                     }
                 }
                 OutLine($"{minI + 1} {maxI + 1}");

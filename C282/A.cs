@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Utils;
 
 using static Utils.Commons;
 
@@ -10,19 +11,10 @@ namespace C282
     {
         public static async Task Main()
         {
-            var n = await In.ReadIntAsync();
             var x = 0;
-            for (var i = 0; i < n; i += 1)
+            await foreach (var cmd in In.ReadWordListAsync(await In.ReadIntAsync()))
             {
-                string cmd = await In.ReadWordAsync();
-                if (cmd.Contains('+'))
-                {
-                    x += 1;
-                }
-                else
-                {
-                    x -= 1;
-                }
+                x += cmd.Contains('+') ? +1 : -1;
             }
             OutLine($"{x}");
         }

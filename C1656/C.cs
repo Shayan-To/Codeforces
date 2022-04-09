@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Utils;
 
 using static Utils.Commons;
 
 // #util Commons
+// #util Utilities/AdvancedLinq
 
 namespace C1656
 {
@@ -12,27 +12,22 @@ namespace C1656
     {
         public static async Task Main()
         {
-            foreach (var ti in Enumerable.Range(0, await In.ReadIntAsync()))
+            await foreach (var n in In.ReadIntListAsync(await In.ReadIntAsync()))
             {
-                var n = await In.ReadIntAsync();
-                var l = new List<int>();
-                foreach (var i in Enumerable.Range(0, n))
-                {
-                    l.Add(await In.ReadIntAsync());
-                }
+                var l = await In.ReadIntListAsync(n).ToListAsync();
                 l.Sort();
-                ErrLine(l.Select(i => $"{i}").Aggregate((p, c) => $"{p} {c}"));
+                ErrLine(l.JoinToString());
 
                 var bl = true;
 
                 if (l.BinarySearch(1) >= 0)
                 {
-                    foreach (var i in Enumerable.Range(0, l.Count - 1))
+                    foreach (var (prev, cur) in l.ZipNeighbors())
                     {
-                        if (l[i] == l[i + 1] - 1)
+                        if (prev == cur - 1)
                         {
                             bl = false;
-                            ErrLine($"{l[i]} {l[i + 1]}");
+                            ErrLine($"{prev} {cur}");
                             if (!IsLocal)
                             {
                                 break;

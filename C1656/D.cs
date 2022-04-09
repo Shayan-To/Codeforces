@@ -1,6 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Utils;
 
 using static Utils.Commons;
 
@@ -12,9 +11,8 @@ namespace C1656
     {
         public static async Task Main()
         {
-            foreach (var ti in Enumerable.Range(0, await In.ReadIntAsync()))
+            await foreach (var n in In.ReadLongListAsync(await In.ReadIntAsync()))
             {
-                var n = await In.ReadLongAsync();
                 var m = n;
                 var res = default(long?);
 
