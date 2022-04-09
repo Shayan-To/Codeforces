@@ -8,62 +8,62 @@ namespace Utils
     public static partial class Utilities
     {
         /// <summary>
-        /// Gets the interval in which Value resides in inside a sorted list.
+        /// Gets the interval which equals to `value` inside a sorted list.
         /// </summary>
-        /// <param name="Value">The value to look for.</param>
+        /// <param name="value">The value to look for.</param>
         /// <returns>
-        /// Start index being the index of fist occurrance of Value, and length being the count of its occurrances.
-        /// If no occurrance of Value is found, start index will be at the first element larger than Value.
+        /// Index of the fist occurrance of `value`, together with the count of its occurrances.
+        /// If no occurrance of `value` is found, index will be at the first element larger than `value`.
         /// </returns>
-        public static (int Index, int Count) BinarySearch<T, TValue>(this IReadOnlyList<T> Self, TValue Value, Func<T, TValue, int> Comp)
+        public static (int Index, int Count) BinarySearch<T, TValue>(this IReadOnlyList<T> self, TValue value, Func<T, TValue, int> comp)
         {
-            var Count = LeastPowerOfTwoOnMin(Self.Count + 1) / 2;
-            var Offset1 = -1;
+            var count = LeastPowerOfTwoOnMin(self.Count + 1) / 2;
+            var offset1 = -1;
 
-            while (Count > 0)
+            while (count > 0)
             {
-                if ((Offset1 + Count) < Self.Count)
+                if ((offset1 + count) < self.Count)
                 {
-                    var C = Comp.Invoke(Self[Offset1 + Count], Value);
-                    if (C < 0)
+                    var c = comp.Invoke(self[offset1 + count], value);
+                    if (c < 0)
                     {
-                        Offset1 += Count;
+                        offset1 += count;
                     }
-                    else if (C == 0)
+                    else if (c == 0)
                     {
                         break;
                     }
                 }
-                Count /= 2;
+                count /= 2;
             }
 
-            var Offset2 = Offset1;
-            if (Count > 0)
+            var offset2 = offset1;
+            if (count > 0)
             {
-                // This should h ave been done in the ElseIf block in the previous loop before the Exit statement.
-                Offset2 += Count;
+                // This should have been done in the `else if` block in the previous loop before the break statement.
+                offset2 += count;
 
-                while (Count > 1)
+                while (count > 1)
                 {
-                    Count /= 2;
-                    if ((Offset1 + Count) < Self.Count)
+                    count /= 2;
+                    if ((offset1 + count) < self.Count)
                     {
-                        if (Comp.Invoke(Self[Offset1 + Count], Value) < 0)
+                        if (comp.Invoke(self[offset1 + count], value) < 0)
                         {
-                            Offset1 += Count;
+                            offset1 += count;
                         }
                     }
-                    if ((Offset2 + Count) < Self.Count)
+                    if ((offset2 + count) < self.Count)
                     {
-                        if (Comp.Invoke(Self[Offset2 + Count], Value) <= 0)
+                        if (comp.Invoke(self[offset2 + count], value) <= 0)
                         {
-                            Offset2 += Count;
+                            offset2 += count;
                         }
                     }
                 }
             }
 
-            return (Offset1 + 1, Offset2 - Offset1);
+            return (offset1 + 1, offset2 - offset1);
         }
     }
 }
