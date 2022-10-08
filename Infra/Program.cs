@@ -49,6 +49,8 @@ namespace Infra
             }
             Console.WriteLine();
 
+            solution ??= Config.FallbackSolution;
+
             if ((mode & Mode.Generate) == Mode.Generate)
             {
                 if (Config.Generation.ClearRoot)
