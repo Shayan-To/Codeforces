@@ -4,6 +4,7 @@ namespace Infra
 {
     public static class Config
     {
+        public static readonly Type FallbackSolution = typeof(C1737.A);
         public static readonly Mode DefaultMode = Mode.GenerateAndRun;
         public static class Generation
         {
