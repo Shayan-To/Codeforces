@@ -71,7 +71,7 @@ namespace Infra
 
                 if (mode == Mode.GenerateAll)
                 {
-                    foreach (var sol in Assembly.GetEntryAssembly()!.GetTypes().Where(t => Regex.IsMatch(t.FullName, @"^C\d+\.[A-Z]$")))
+                    foreach (var sol in Assembly.GetEntryAssembly()!.GetTypes().Where(t => Regex.IsMatch(t.FullName ?? "", @"^C\d+\.[A-Z]$")))
                     {
                         await GenerateForSolutionAsync(sol);
                     }
