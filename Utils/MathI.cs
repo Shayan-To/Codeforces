@@ -1,9 +1,78 @@
+using System;
+
 // #util Verify
 
 namespace Utils
 {
     public static class MathI
     {
+
+        /// <returns>
+        /// The reminder, between 0 and B - 1.
+        /// </returns>
+        public static int NonNegMod(int A, int B)
+        {
+            A %= B;
+            if (A >= 0)
+            {
+                return A;
+            }
+
+            return A + Math.Abs(B);
+        }
+
+        /// <returns>
+        /// The reminder, between 0 and B - 1.
+        /// </returns>
+        public static long NonNegMod(long A, long B)
+        {
+            A %= B;
+            if (A >= 0)
+            {
+                return A;
+            }
+
+            return A + Math.Abs(B);
+        }
+
+        /// <returns>
+        /// The reminder, between 1 and B.
+        /// </returns>
+        public static int PosMod(int A, int B)
+        {
+            A %= B;
+            if (A > 0)
+            {
+                return A;
+            }
+
+            if (B > 0)
+            {
+                return A + B;
+            }
+
+            return A - B;
+        }
+
+        /// <returns>
+        /// The reminder, between 1 and B.
+        /// </returns>
+        public static long PosMod(long A, long B)
+        {
+            A %= B;
+            if (A > 0)
+            {
+                return A;
+            }
+
+            if (B > 0)
+            {
+                return A + B;
+            }
+
+            return A - B;
+        }
+
         public static int Power(int a, int b)
         {
             Verify.FalseArg(b < 0, nameof(b), $"{nameof(b)} must be non-negative.");
@@ -21,7 +90,7 @@ namespace Utils
             return r;
         }
 
-        public static long PowerL(long a, int b)
+        public static long Power(long a, int b)
         {
             Verify.FalseArg(b < 0, nameof(b), $"{nameof(b)} must be non-negative.");
             var r = 1L;
@@ -72,7 +141,7 @@ namespace Utils
             return (root, remainder);
         }
 
-        public static (long Root, long Remainder) SquareRootL(long a)
+        public static (long Root, long Remainder) SquareRoot(long a)
         {
             Verify.FalseArg(a < 0, nameof(a), $"{nameof(a)} must be non-negative.");
 
