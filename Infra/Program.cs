@@ -53,7 +53,7 @@ namespace Infra
 
             if ((mode & Mode.Generate) == Mode.Generate)
             {
-                if (Config.Generation.ClearRoot)
+                if (Config.Generation.ClearRoot && Directory.Exists(Paths.GenerationRoot))
                 {
                     foreach (var d in Directory.EnumerateDirectories(Paths.GenerationRoot))
                     {
