@@ -12,9 +12,9 @@ namespace C1656
     {
         public static async Task Main()
         {
-            await foreach (var n in In.ReadIntListAsync(await In.ReadIntAsync()))
+            await foreach (var n in In.ReadWordListAsync<int>(await In.ReadWordAsync<int>()))
             {
-                var l = await In.ReadIntListAsync(n).ToListAsync();
+                var l = await In.ReadWordListAsync<int>(n).ToListAsync();
                 l.Sort();
                 ErrLine(l.JoinToString());
 

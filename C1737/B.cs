@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,10 +18,8 @@ namespace C1737
         {
             // PrintSample();
             // TestCountDivisibles();
-            await foreach (var f in In.ReadLongListAsync(await In.ReadIntAsync()))
+            await foreach (var (f, t) in In.ReadWordListAsync<long, long>(await In.ReadWordAsync<int>()))
             {
-                var t = await In.ReadLongAsync();
-
                 var fr = MathI.SquareRoot(f).Root;
                 var tr = MathI.SquareRoot(t).Root;
 

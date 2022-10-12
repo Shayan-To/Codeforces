@@ -13,9 +13,8 @@ namespace C1737
     {
         public static async Task Main()
         {
-            await foreach (var n in In.ReadIntListAsync(await In.ReadIntAsync()))
+            await foreach (var (n, k) in In.ReadWordListAsync<int, int>(await In.ReadWordAsync<int>()))
             {
-                var k = await In.ReadIntAsync();
                 var bMax = n / k;
                 var chars = await In.ReadWordAsync();
 

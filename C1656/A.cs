@@ -11,12 +11,12 @@ namespace C1656
     {
         public static async Task Main()
         {
-            await foreach (var n in In.ReadIntListAsync(await In.ReadIntAsync()))
+            await foreach (var n in In.ReadWordListAsync<int>(await In.ReadWordAsync<int>()))
             {
                 var (min, minI) = (int.MaxValue, -1);
                 var (max, maxI) = (int.MinValue, -1);
 
-                await foreach (var (x, i) in In.ReadIntListAsync(n).SelectAsync((x, i) => (x, i)))
+                await foreach (var (x, i) in In.ReadWordListAsync<int>(n).SelectAsync((x, i) => (x, i)))
                 {
                     if (min > x)
                     {

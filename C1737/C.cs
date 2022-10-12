@@ -13,12 +13,12 @@ namespace C1737
     {
         public static async Task Main()
         {
-            await foreach (var n in In.ReadIntListAsync(await In.ReadIntAsync()))
+            await foreach (var n in In.ReadWordListAsync<int>(await In.ReadWordAsync<int>()))
             {
-                var (r1, c1) = (await In.ReadIntAsync(), await In.ReadIntAsync());
-                var (r2, c2) = (await In.ReadIntAsync(), await In.ReadIntAsync());
-                var (r3, c3) = (await In.ReadIntAsync(), await In.ReadIntAsync());
-                var (x, y) = (await In.ReadIntAsync(), await In.ReadIntAsync());
+                var (r1, c1) = await In.ReadWordAsync<int, int>();
+                var (r2, c2) = await In.ReadWordAsync<int, int>();
+                var (r3, c3) = await In.ReadWordAsync<int, int>();
+                var (x, y) = await In.ReadWordAsync<int, int>();
 
                 var r = r1 == r2 ? r1 : r3;
                 var c = c1 == c2 ? c1 : c3;
