@@ -11,10 +11,9 @@ namespace C1656
     {
         public static async Task Main()
         {
-            await foreach (var n in In.ReadIntListAsync(await In.ReadIntAsync()))
+            await foreach (var (n, k) in In.ReadWordListAsync<int, int>(await In.ReadWordAsync<int>()))
             {
-                var k = await In.ReadIntAsync();
-                var l = await In.ReadIntListAsync(n).ToListAsync();
+                var l = await In.ReadWordListAsync<int>(n).ToListAsync();
                 l.Sort();
 
                 var bl = false;

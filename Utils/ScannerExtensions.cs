@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,40 +8,69 @@ namespace Utils
 {
     public static class ScannerExtensions
     {
-        #region Typed Read
-        public static async Task<int> ReadIntAsync(this Scanner self)
+        private abstract class Parser { }
+        private abstract class Parser<T> : Parser { public abstract T Parse(string s); }
+        private class StringParser : Parser<string> { public override string Parse(string s) => s; }
+        private class IntParser : Parser<int> { public override int Parse(string s) => int.Parse(s); }
+        private class LongParser : Parser<long> { public override long Parse(string s) => long.Parse(s); }
+        private class DoubleParser : Parser<double> { public override double Parse(string s) => double.Parse(s); }
+        private class SingleParser : Parser<float> { public override float Parse(string s) => float.Parse(s); }
+        private class DecimalParser : Parser<decimal> { public override decimal Parse(string s) => decimal.Parse(s); }
+
+        private static readonly Dictionary<Type, Parser> parsers = new Dictionary<Type, Parser>()
         {
-            return int.Parse(await self.ReadWordAsync());
+            [typeof(string)] = new StringParser(),
+            [typeof(int)] = new IntParser(),
+            [typeof(long)] = new LongParser(),
+            [typeof(double)] = new DoubleParser(),
+            [typeof(float)] = new SingleParser(),
+            [typeof(decimal)] = new DecimalParser(),
+        };
+
+        private static Parser<T> GetParser<T>()
+        {
+            return (Parser<T>)parsers[typeof(T)];
         }
 
-        public static async Task<long> ReadLongAsync(this Scanner self)
+        private static T Parse<T>(string s)
         {
-            return long.Parse(await self.ReadWordAsync());
+            return GetParser<T>().Parse(s);
         }
 
-        public static async Task<double> ReadDoubleAsync(this Scanner self)
+        public static async Task<T> ReadWordAsync<T>(this Scanner self)
         {
-            return double.Parse(await self.ReadWordAsync());
+            return Parse<T>(await self.ReadWordAsync());
         }
 
-        public static async Task<float> ReadSingleAsync(this Scanner self)
+        public static async Task<(T1, T2)> ReadWordAsync<T1, T2>(this Scanner self)
         {
-            return float.Parse(await self.ReadWordAsync());
+            return (await self.ReadWordAsync<T1>(), await self.ReadWordAsync<T2>());
         }
 
-        public static async Task<decimal> ReadDecimalAsync(this Scanner self)
+        public static async Task<(T1, T2, T3)> ReadWordAsync<T1, T2, T3>(this Scanner self)
         {
-            return decimal.Parse(await self.ReadWordAsync());
+            return (await self.ReadWordAsync<T1>(), await self.ReadWordAsync<T2>(), await self.ReadWordAsync<T3>());
         }
-        #endregion
 
-        #region List Read
-        public static async IAsyncEnumerable<string> ReadWordListAsync(this Scanner self, int n)
+        public static async Task<(T1, T2, T3, T4)> ReadWordAsync<T1, T2, T3, T4>(this Scanner self)
         {
-            for (var i = 0; i < n; i += 1)
-            {
-                yield return await self.ReadWordAsync();
-            }
+            return (await self.ReadWordAsync<T1>(), await self.ReadWordAsync<T2>(), await self.ReadWordAsync<T3>(), await self.ReadWordAsync<T4>());
+        }
+
+        public static async Task<(T1, T2, T3, T4, T5)> ReadWordAsync<T1, T2, T3, T4, T5>(this Scanner self)
+        {
+            return (
+                await self.ReadWordAsync<T1>(), await self.ReadWordAsync<T2>(), await self.ReadWordAsync<T3>(), await self.ReadWordAsync<T4>(),
+                await self.ReadWordAsync<T5>()
+            );
+        }
+
+        public static async Task<(T1, T2, T3, T4, T5, T6)> ReadWordAsync<T1, T2, T3, T4, T5, T6>(this Scanner self)
+        {
+            return (
+                await self.ReadWordAsync<T1>(), await self.ReadWordAsync<T2>(), await self.ReadWordAsync<T3>(), await self.ReadWordAsync<T4>(),
+                await self.ReadWordAsync<T5>(), await self.ReadWordAsync<T6>()
+            );
         }
 
         public static async IAsyncEnumerable<string> ReadLineListAsync(this Scanner self, int n)
@@ -51,45 +81,90 @@ namespace Utils
             }
         }
 
-        public static async IAsyncEnumerable<int> ReadIntListAsync(this Scanner self, int n, int diff = 0)
+        public static async IAsyncEnumerable<string> ReadWordListAsync(this Scanner self, int n)
         {
             for (var i = 0; i < n; i += 1)
             {
-                yield return await self.ReadIntAsync() + diff;
+                yield return await self.ReadWordAsync();
             }
         }
 
-        public static async IAsyncEnumerable<long> ReadLongListAsync(this Scanner self, int n)
+        public static async IAsyncEnumerable<T> ReadWordListAsync<T>(this Scanner self, int n)
         {
+            var parser = GetParser<T>();
             for (var i = 0; i < n; i += 1)
             {
-                yield return await self.ReadLongAsync();
+                yield return parser.Parse(await self.ReadWordAsync());
             }
         }
 
-        public static async IAsyncEnumerable<double> ReadDoubleListAsync(this Scanner self, int n)
+        public static async IAsyncEnumerable<(T1, T2)> ReadWordListAsync<T1, T2>(this Scanner self, int n)
         {
+            var parser1 = GetParser<T1>();
+            var parser2 = GetParser<T2>();
             for (var i = 0; i < n; i += 1)
             {
-                yield return await self.ReadDoubleAsync();
+                yield return (parser1.Parse(await self.ReadWordAsync()), parser2.Parse(await self.ReadWordAsync()));
             }
         }
 
-        public static async IAsyncEnumerable<float> ReadSingleListAsync(this Scanner self, int n)
+        public static async IAsyncEnumerable<(T1, T2, T3)> ReadWordListAsync<T1, T2, T3>(this Scanner self, int n)
         {
+            var parser1 = GetParser<T1>();
+            var parser2 = GetParser<T2>();
+            var parser3 = GetParser<T3>();
             for (var i = 0; i < n; i += 1)
             {
-                yield return await self.ReadSingleAsync();
+                yield return (parser1.Parse(await self.ReadWordAsync()), parser2.Parse(await self.ReadWordAsync()), parser3.Parse(await self.ReadWordAsync()));
             }
         }
 
-        public static async IAsyncEnumerable<decimal> ReadDecimalListAsync(this Scanner self, int n)
+        public static async IAsyncEnumerable<(T1, T2, T3, T4)> ReadWordListAsync<T1, T2, T3, T4>(this Scanner self, int n)
         {
+            var parser1 = GetParser<T1>();
+            var parser2 = GetParser<T2>();
+            var parser3 = GetParser<T3>();
+            var parser4 = GetParser<T4>();
             for (var i = 0; i < n; i += 1)
             {
-                yield return await self.ReadDecimalAsync();
+                yield return (
+                    parser1.Parse(await self.ReadWordAsync()), parser2.Parse(await self.ReadWordAsync()), parser3.Parse(await self.ReadWordAsync()),
+                    parser4.Parse(await self.ReadWordAsync())
+                );
             }
         }
-        #endregion
+
+        public static async IAsyncEnumerable<(T1, T2, T3, T4, T5)> ReadWordListAsync<T1, T2, T3, T4, T5>(this Scanner self, int n)
+        {
+            var parser1 = GetParser<T1>();
+            var parser2 = GetParser<T2>();
+            var parser3 = GetParser<T3>();
+            var parser4 = GetParser<T4>();
+            var parser5 = GetParser<T5>();
+            for (var i = 0; i < n; i += 1)
+            {
+                yield return (
+                    parser1.Parse(await self.ReadWordAsync()), parser2.Parse(await self.ReadWordAsync()), parser3.Parse(await self.ReadWordAsync()),
+                    parser4.Parse(await self.ReadWordAsync()), parser5.Parse(await self.ReadWordAsync())
+                );
+            }
+        }
+
+        public static async IAsyncEnumerable<(T1, T2, T3, T4, T5, T6)> ReadWordListAsync<T1, T2, T3, T4, T5, T6>(this Scanner self, int n)
+        {
+            var parser1 = GetParser<T1>();
+            var parser2 = GetParser<T2>();
+            var parser3 = GetParser<T3>();
+            var parser4 = GetParser<T4>();
+            var parser5 = GetParser<T5>();
+            var parser6 = GetParser<T6>();
+            for (var i = 0; i < n; i += 1)
+            {
+                yield return (
+                    parser1.Parse(await self.ReadWordAsync()), parser2.Parse(await self.ReadWordAsync()), parser3.Parse(await self.ReadWordAsync()),
+                    parser4.Parse(await self.ReadWordAsync()), parser5.Parse(await self.ReadWordAsync()), parser6.Parse(await self.ReadWordAsync())
+                );
+            }
+        }
     }
 }

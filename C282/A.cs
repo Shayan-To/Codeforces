@@ -12,7 +12,7 @@ namespace C282
         public static async Task Main()
         {
             var x = 0;
-            await foreach (var cmd in In.ReadWordListAsync(await In.ReadIntAsync()))
+            await foreach (var cmd in In.ReadWordListAsync(await In.ReadWordAsync<int>()))
             {
                 x += cmd.Contains('+') ? +1 : -1;
             }

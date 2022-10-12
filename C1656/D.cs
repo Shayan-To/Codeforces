@@ -11,7 +11,7 @@ namespace C1656
     {
         public static async Task Main()
         {
-            await foreach (var n in In.ReadLongListAsync(await In.ReadIntAsync()))
+            await foreach (var n in In.ReadWordListAsync<long>(await In.ReadWordAsync<int>()))
             {
                 var m = n;
                 var res = default(long?);

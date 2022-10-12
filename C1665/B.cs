@@ -14,10 +14,10 @@ namespace C1665
     {
         public static async Task Main()
         {
-            await foreach (var n in In.ReadIntListAsync(await In.ReadIntAsync()))
+            await foreach (var n in In.ReadWordListAsync<int>(await In.ReadWordAsync<int>()))
             {
                 var dic = new AutoDictionary<int, int>();
-                await foreach (var i in In.ReadIntListAsync(n))
+                await foreach (var i in In.ReadWordListAsync<int>(n))
                 {
                     dic[i] += 1;
                 }
