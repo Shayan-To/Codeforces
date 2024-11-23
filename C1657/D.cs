@@ -14,7 +14,7 @@ namespace C1657
             var n = await In.ReadWordAsync<int>();
             var c = await In.ReadWordAsync<int>();
 
-            foreach (var _ in n.Range())
+            foreach (var _ in Range(n))
             {
                 var unit = new Unit() {
                     Cost = await In.ReadWordAsync<int>(),
@@ -24,7 +24,7 @@ namespace C1657
             }
 
             var m = await In.ReadWordAsync<int>();
-            foreach (var _ in m.Range())
+            foreach (var _ in Range(m))
             {
 
             }

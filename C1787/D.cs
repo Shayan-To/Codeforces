@@ -27,7 +27,7 @@ namespace C1787
                 }
 
 if (print)
-                ErrLine(Enumerable.Range(0, n).JoinToString());
+                ErrLine(Range(n).JoinToString());
 if (print)
                 ErrLine(l.JoinToString());
 

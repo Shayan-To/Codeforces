@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 // #util Scanner
 // #util ScannerExtensions
@@ -27,6 +29,21 @@ namespace Utils
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Error.WriteLine(s);
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static IEnumerable<int> Range(int count)
+        {
+            return Enumerable.Range(0, count);
+        }
+
+        public static IEnumerable<int> RangeSC(int start, int count)
+        {
+            return Enumerable.Range(start, count);
+        }
+
+        public static IEnumerable<int> RangeSE(int start, int end)
+        {
+            return Enumerable.Range(start, end - start);
         }
 
         public static readonly Scanner In = new Scanner(Console.In);

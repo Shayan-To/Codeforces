@@ -142,29 +142,6 @@ namespace Utils
             return res.ToString();
         }
 
-        public static IEnumerable<int> Range(this int n, int diff = 0, bool reverse = false)
-        {
-            if (!reverse)
-            {
-                for (var i = 0; i < n; i += 1)
-                {
-                    yield return i + diff;
-                }
-            }
-            else
-            {
-                for (var i = n - 1; i >= 0; i -= 1)
-                {
-                    yield return i + diff;
-                }
-            }
-        }
-
-        public static async Task<IEnumerable<int>> RangeAsync(this Task<int> n, int diff = 0, bool reverse = false)
-        {
-            return (await n).Range(diff, reverse);
-        }
-
         public static T[] Subarray<T>(this T[] self, int start, int count)
         {
             var res = new T[count];

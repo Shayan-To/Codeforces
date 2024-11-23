@@ -30,7 +30,7 @@ namespace C1665
 
                 ErrLine(list.JoinToString());
 
-                foreach (var i in n.Range())
+                foreach (var i in Range(n))
                 {
                     list[i] -= Math.Min(n - i, list[i]);
                 }

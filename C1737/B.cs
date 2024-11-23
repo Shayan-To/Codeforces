@@ -51,13 +51,13 @@ namespace C1737
         private static void TestCountDivisibles()
         {
             var r = new Random(42423);
-            foreach (var _ in Enumerable.Range(0, 200))
+            foreach (var _ in Range(200))
             {
                 var start = r.Next(0, 100);
                 var count = r.Next(5, 20);
                 var divisor = r.Next(1, 10);
 
-                ErrLine($"{start}-{start + count} / {divisor} => {CountDivisibles(start, start + count, divisor)}   {Enumerable.Range(start, count).JoinToString(i => i % divisor == 0 ? $"({i})" : $"{i}")}");
+                ErrLine($"{start}-{start + count} / {divisor} => {CountDivisibles(start, start + count, divisor)}   {RangeSC(start, count).JoinToString(i => i % divisor == 0 ? $"({i})" : $"{i}")}");
             }
         }
 
@@ -69,7 +69,7 @@ namespace C1737
 
             var pl = 50;
 
-            foreach (var n in Enumerable.Range(1, 1000))
+            foreach (var n in RangeSC(1, 1000))
             {
                 var ns = n.ToString().Length;
                 bn[n / pl].AppendFormat($"{{0,{ns}}} ", n);
@@ -77,7 +77,7 @@ namespace C1737
                 bil[n / pl].AppendFormat($"{{0,{ns}}} ", n % MathI.SquareRoot(n).Root == 0 ? "*" : "");
             }
 
-            foreach (var i in Enumerable.Range(0, bn.Count))
+            foreach (var i in Range(bn.Count))
             {
                 ErrLine(bn[i].ToString());
                 ErrLine(br[i].ToString());

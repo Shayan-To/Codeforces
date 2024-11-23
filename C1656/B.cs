@@ -17,7 +17,7 @@ namespace C1656
                 l.Sort();
 
                 var bl = false;
-                foreach (var i in l.Count.Range())
+                foreach (var i in Range(l.Count))
                 {
                     int j = l.BinarySearch(i, l.Count - i, l[i] + k, null);
                     if (j >= 0)

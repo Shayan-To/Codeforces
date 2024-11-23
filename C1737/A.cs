@@ -25,10 +25,10 @@ namespace C1737
                     alph[ch - 'a'] += 1;
                 }
 
-                ErrLine(Enumerable.Range(0, 'z' - 'a' + 1).Select(i => (char)(i + 'a')).JoinToString());
+                ErrLine(Range('z' - 'a' + 1).Select(i => (char)(i + 'a')).JoinToString());
                 ErrLine(alph.JoinToString());
 
-                var comps = Enumerable.Range(0, k).Select(_ => new Compartment()).ToArray();
+                var comps = Range(k).Select(_ => new Compartment()).ToArray();
 
                 for (var ch = 'a'; ch <= 'z'; ch++)
                 {
