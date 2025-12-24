@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/bin/Debug/net9.0/Codeforces.dll",
-            "args": [],
+            "args": ["gar", "${fileDirnameBasename}-${fileBasenameNoExtension}"],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "stopAtEntry": false
