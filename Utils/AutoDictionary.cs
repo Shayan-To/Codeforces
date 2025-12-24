@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Utils
+namespace Utils._AutoDictionary
 {
     public class AutoDictionary<TKey, TValue> : Dictionary<TKey, TValue> where TKey : notnull where TValue : new()
     {

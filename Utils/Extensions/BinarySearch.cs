@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-// #util MathI
+using Utils._MathI;
 
-namespace Utils
+namespace Utils.Extensions._BinarySearch
 {
     public static partial class Utilities
     {

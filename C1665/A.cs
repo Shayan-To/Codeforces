@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Utils;
 
-using static Utils.Commons;
+using Utils._ScannerExtensions;
 
-// #util Commons
+using static Utils._Commons.Commons;
 
 namespace C1665
 {

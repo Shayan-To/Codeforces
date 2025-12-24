@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Utils
+namespace Utils._Verify
 {
     public static class Verify
     {

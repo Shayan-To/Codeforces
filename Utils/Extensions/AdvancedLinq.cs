@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-// #util Verify
+using Utils._Verify;
 
-namespace Utils
+namespace Utils.Extensions._AdvancedLinq
 {
     public static partial class Utilities
     {

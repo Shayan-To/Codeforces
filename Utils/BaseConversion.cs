@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-// #util MathI
-// #util Verify
-// #util Utilities/Common
+using Utils._Verify;
+using Utils.Extensions._Common;
 
-namespace Utils
+namespace Utils._BaseConversion
 {
     public static class BaseConversion
     {

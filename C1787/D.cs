@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Utils;
 
-using static Utils.Commons;
+using Utils._ScannerExtensions;
+using Utils._Verify;
+using Utils.Extensions._Common;
 
-
-// #util Commons
+using static Utils._Commons.Commons;
 
 namespace C1787
 {
@@ -26,10 +26,10 @@ namespace C1787
                     l[i] += i;
                 }
 
-if (print)
-                ErrLine(Range(n).JoinToString());
-if (print)
-                ErrLine(l.JoinToString());
+                if (print)
+                    ErrLine(Range(n).JoinToString());
+                if (print)
+                    ErrLine(l.JoinToString());
 
                 var mk = new bool[n];
                 var bh = new int?[n];
@@ -40,8 +40,8 @@ if (print)
                     Dfs(i, false);
                 }
 
-if (print)
-                ErrLine(bh.Select(b => b ?? -1).JoinToString());
+                if (print)
+                    ErrLine(bh.Select(b => b ?? -1).JoinToString());
 
                 var pathLen = 0;
                 var r = 0;
@@ -56,8 +56,8 @@ if (print)
                     pathLen += 1;
                     var bb = bh[i] ?? int.MaxValue;
                     var c = n + 1 + bh.Count(b => b <= bb) - (bh[i].HasValue ? 1 : 0);
-if (print)
-                    ErrLine($"c {i} {c}");
+                    if (print)
+                        ErrLine($"c {i} {c}");
                     r += c;
                 }
 
@@ -70,8 +70,8 @@ if (print)
                             continue;
                         }
                         var c = 2 * n + 1;
-if (print)
-                        ErrLine($"n {i} {c}");
+                        if (print)
+                            ErrLine($"n {i} {c}");
                         r += c;
                     }
                 }

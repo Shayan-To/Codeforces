@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Utils;
 
-using static Utils.Commons;
 
-// #util Commons
-// #util MathI
+using Utils._ScannerExtensions;
+
+using static Utils._Commons.Commons;
 
 namespace C1896
 {

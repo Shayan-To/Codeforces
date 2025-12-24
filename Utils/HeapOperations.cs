@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Utils
+namespace Utils._HeapOperations
 {
     public class HeapOperations<T>
     {

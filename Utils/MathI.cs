@@ -1,8 +1,8 @@
 using System;
 
-// #util Verify
+using Utils._Verify;
 
-namespace Utils
+namespace Utils._MathI
 {
     public static class MathI
     {

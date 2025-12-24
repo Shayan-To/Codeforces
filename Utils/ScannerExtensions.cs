@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-// #util Scanner
+using Utils._Scanner;
 
-namespace Utils
+namespace Utils._ScannerExtensions
 {
     public static class ScannerExtensions
     {

@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-// #util Verify
+using Utils._Verify;
 
-namespace Utils
+namespace Utils._Scanner
 {
     public class Scanner
     {

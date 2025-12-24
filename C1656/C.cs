@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Utils;
 
-using static Utils.Commons;
+using Utils._ScannerExtensions;
+using Utils.Extensions._AdvancedLinq;
+using Utils.Extensions._Common;
 
-// #util Commons
-// #util Utilities/AdvancedLinq
+using static Utils._Commons.Commons;
 
 namespace C1656
 {

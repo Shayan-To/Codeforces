@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
-using Utils;
 
-using static Utils.Commons;
+using Utils._ScannerExtensions;
 
-// #util Commons
+using static Utils._Commons.Commons;
 
 namespace C1657
 {
@@ -16,7 +15,8 @@ namespace C1657
 
             foreach (var _ in Range(n))
             {
-                var unit = new Unit() {
+                var unit = new Unit()
+                {
                     Cost = await In.ReadWordAsync<int>(),
                     Damage = await In.ReadWordAsync<int>(),
                     Health = await In.ReadWordAsync<int>(),

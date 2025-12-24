@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Utils;
 
-using static Utils.Commons;
+using Utils._AutoDictionary;
+using Utils._MathI;
+using Utils._ScannerExtensions;
+using Utils.Extensions._Common;
 
-// #util Commons
-// #util MathI
-// #util AutoDictionary
+using static Utils._Commons.Commons;
 
 namespace C1737
 {

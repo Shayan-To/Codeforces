@@ -5,7 +5,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Utils;
+
+using Utils._Verify;
+using Utils.Extensions._Common;
 
 namespace Infra
 {
@@ -133,30 +135,29 @@ namespace Infra
                     usings.AddRange(src.Usings);
                     lines.AddRange(src.Lines.Prepend(""));
 
-                    foreach (var u in src.Utils.Where(u => utils.Add(u)))
+                    var utilNames = src.Usings
+                        .Where(l => Regex.IsMatch(l, @"^using( static)? Utils\."))
+                        .Select(l => Regex.Replace(l, @"^using Utils\.(.*);$|^using static Utils\.(.*)\.[^\.]+;$", "$1$2"))
+                        .Select(l => Regex.Replace(l, @"^(.*\.)?_([^\.]+)$", "$1$2"));
+
+                    foreach (var u in utilNames.Where(u => utils.Add(u)))
                     {
                         await ReadSourceRecAsync("Utils", u);
                     }
                 }
             }
 
-            async Task<(IEnumerable<string> Usings, IEnumerable<string> Utils, IEnumerable<string> Lines)> ReadSourceAsync(string directory, string name)
+            async Task<(IEnumerable<string> Usings, IEnumerable<string> Lines)> ReadSourceAsync(string directory, string name)
             {
-                var names = name.Split("/");
+                var names = name.Split(".");
                 var paths = new[] { Paths.ProjectRoot, directory }.Concat(names.SkipLast(1)).Append($"{names.Last()}.cs").ToArray();
                 var lines = (await File.ReadAllLinesAsync(Path.Combine(paths))).AsEnumerable();
                 var usings = lines.TakeWhile(l => Regex.IsMatch(l, @"^\s*(?:using\s.*;)?\s*$")).ToArray();
                 lines = lines.Skip(usings.Length);
-                var utils = lines.TakeWhile(l => Regex.IsMatch(l, @"^\s*(?:// ?#util\s.*)?$")).ToArray();
-                lines = lines.Skip(utils.Length);
 
                 return (
                     Usings: usings.Select(l => Regex.Replace(l, @"\s+", " "))
                                 .Select(l => Regex.Replace(l, @"^ | $| (?=;)", ""))
-                                .Where(l => l.Length != 0),
-                    Utils: utils.Select(l => Regex.Replace(l, @"\s+", " "))
-                                .Select(l => Regex.Replace(l, @"^ | $", ""))
-                                .Select(l => Regex.Replace(l, @"^// ?#util ", ""))
                                 .Where(l => l.Length != 0),
                     Lines: lines
                 );

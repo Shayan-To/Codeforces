@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-// #util Scanner
-// #util ScannerExtensions
-// #util Utilities/Common
+using Utils._Scanner;
 
-namespace Utils
+namespace Utils._Commons
 {
     public static class Commons
     {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-// #util Verify
+using Utils._Verify;
 
-namespace Utils
+namespace Utils.Extensions._Common
 {
     public static partial class Utilities
     {
