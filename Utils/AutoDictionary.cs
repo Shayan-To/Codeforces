@@ -20,8 +20,6 @@ namespace Utils
         { }
         public AutoDictionary(int capacity, IEqualityComparer<TKey>? comparer) : base(capacity, comparer)
         { }
-        protected AutoDictionary(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
-        { }
 
         public new TValue this[TKey key]
         {
