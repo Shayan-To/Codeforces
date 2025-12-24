@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 // #util Verify
 
@@ -106,70 +107,6 @@ namespace Utils
             }
         }
 
-        public static T MinOn<T, TKey>(this IEnumerable<T> self, Func<T, TKey> keySelector)
-        {
-            return self.MinOn(keySelector, Comparer<TKey>.Default);
-        }
-
-        public static T MinOn<T, TKey>(this IEnumerable<T> self, Func<T, TKey> keySelector, IComparer<TKey> comparer)
-        {
-            var minKey = default(TKey);
-            var min = default(T);
-            var bl = true;
-            foreach (var i in self)
-            {
-                if (bl)
-                {
-                    min = i;
-                    minKey = keySelector(i);
-                    bl = false;
-                    continue;
-                }
-
-                var key = keySelector(i);
-                if (comparer.Compare(key, minKey) < 0)
-                {
-                    min = i;
-                    minKey = key;
-                }
-            }
-
-            Verify.False(bl, "Collection contains no elements.");
-            return min!;
-        }
-
-        public static T MaxOn<T, TKey>(this IEnumerable<T> self, Func<T, TKey> keySelector)
-        {
-            return self.MaxOn(keySelector, Comparer<TKey>.Default);
-        }
-
-        public static T MaxOn<T, TKey>(this IEnumerable<T> self, Func<T, TKey> keySelector, IComparer<TKey> comparer)
-        {
-            var maxKey = default(TKey);
-            var max = default(T);
-            var bl = true;
-            foreach (var i in self)
-            {
-                if (bl)
-                {
-                    max = i;
-                    maxKey = keySelector(i);
-                    bl = false;
-                    continue;
-                }
-
-                var key = keySelector(i);
-                if (comparer.Compare(key, maxKey) > 0)
-                {
-                    max = i;
-                    maxKey = key;
-                }
-            }
-
-            Verify.False(bl, "Collection contains no elements.");
-            return max!;
-        }
-
         public static IEnumerable<T> DistinctNeighbors<T>(this IEnumerable<T> self)
         {
             return self.DistinctNeighbors(EqualityComparer<T>.Default);
@@ -198,19 +135,7 @@ namespace Utils
 
         public static IEnumerable<(T, T)> ZipNeighbors<T>(this IEnumerable<T> self)
         {
-            var bl = true;
-            var prev = default(T);
-            foreach (var i in self)
-            {
-                if (bl)
-                {
-                    bl = false;
-                    prev = i;
-                    continue;
-                }
-                yield return (prev!, i);
-                prev = i;
-            }
+            return self.Zip(self.Skip(1));
         }
 
         public static IEnumerable<T> Cumulate<T>(this IEnumerable<T> self, Func<T, T, T> func)
