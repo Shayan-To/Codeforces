@@ -49,7 +49,12 @@ namespace Infra
             }
             Console.WriteLine();
 
-            solution ??= Config.FallbackSolution;
+            if (solution == null)
+            {
+                Console.WriteLine($"Usage: dotnet run|{Path.GetFileName(Environment.GetCommandLineArgs().First())} [{Enum.GetValues(typeof(Mode)).Cast<Mode>().Select(m => m.ToString()).JoinToString("|")}] <Contest>-<Problem>");
+                Environment.Exit(1);
+                throw new Exception("Invalid arguments.");
+            }
 
             if ((mode & Mode.Generate) == Mode.Generate)
             {
