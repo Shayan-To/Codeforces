@@ -4,9 +4,6 @@
         "obj": true
     },
     "workbench.colorCustomizations": {
-        "editorGroup.border": "#9f579a",
-        "panel.border": "#9f579a",
-        "sideBar.border": "#9f579a",
         "statusBar.background": "#7e457a",
         "statusBar.foreground": "#e7e7e7",
         "statusBarItem.hoverBackground": "#9f579a",
@@ -14,7 +11,11 @@
         "titleBar.activeBackground": "#7e457a",
         "titleBar.activeForeground": "#e7e7e7",
         "titleBar.inactiveBackground": "#7e457a99",
-        "titleBar.inactiveForeground": "#e7e7e799"
+        "titleBar.inactiveForeground": "#e7e7e799",
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#9f579a",
+        "statusBarItem.remoteBackground": "#7e457a",
+        "statusBarItem.remoteForeground": "#e7e7e7"
     },
     "peacock.color": "#7e457a",
     "cSpell.words": [

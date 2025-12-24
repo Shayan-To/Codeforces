@@ -16,7 +16,7 @@ namespace C1930
             await foreach (var n in In.ReadWordListAsync<int>(await In.ReadWordAsync<int>()))
             {
                 var h = n / 2;
-                var r = RangeSC(1, h).Zip(RangeSC(1, h).Select(i => i + h)).SelectMany(p => new[] { p.First, p.Second });
+                var r = RangeSC(1, h).SelectMany(i => new[] { i, i + h });
                 if (n % 2 == 1)
                 {
                     r = r.Append(n);
