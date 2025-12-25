@@ -1,7 +1,3 @@
-﻿using System.Threading.Tasks;
-
-using static Utils._Commons.Commons;
-
 namespace C1787
 {
     public static class Test

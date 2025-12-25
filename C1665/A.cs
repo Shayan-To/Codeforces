@@ -1,9 +1,3 @@
-﻿using System.Threading.Tasks;
-
-using Utils._ScannerExtensions;
-
-using static Utils._Commons.Commons;
-
 namespace C1665
 {
     public static class A

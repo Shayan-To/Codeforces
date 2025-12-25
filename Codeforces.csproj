@@ -5,6 +5,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <LangVersion>13.0</LangVersion>
         <Nullable>Enable</Nullable>
+        <ImplicitUsings>Enable</ImplicitUsings>
         <RootNamespace></RootNamespace>
         <StartupObject>Infra.Program</StartupObject>
         <DefineConstants>LOCAL</DefineConstants>
@@ -24,6 +25,9 @@
         <CustomAttribute Include="Infra.PathAttribute">
             <_Parameter1>ProjectRoot</_Parameter1>
             <_Parameter2>$(ProjectDir)</_Parameter2>
+        </CustomAttribute>
+        <CustomAttribute Include="Infra.ImplicitUsingsAttribute">
+            <_Parameter1>@(Using)</_Parameter1>
         </CustomAttribute>
     </ItemGroup>
 

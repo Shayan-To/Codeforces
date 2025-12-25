@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 using Utils._Verify;
+using Utils.Extensions._AdvancedLinq;
 using Utils.Extensions._Common;
 
 namespace Infra
@@ -114,12 +110,20 @@ namespace Infra
                 var usings = new List<string>();
                 var lines = new List<string>();
 
-                await ReadSourceRecAsync(solution.Namespace ?? "", solution.Name);
+                await ReadSourceRecAsync(
+                    solution.Namespace ?? "",
+                    solution.Name,
+                    beforeUtils: async () =>
+                    {
+                        await ProcessSourceRecAsync(new() { Usings = ImplicitUsingsAttribute.Usings.Select(u => $"using {u};") });
+                        await ReadSourceRecAsync("Utils", "_GlobalUsings");
+                    }
+                );
 
                 await writer.WriteLineAsync("#nullable enable");
                 await writer.WriteLineAsync();
 
-                foreach (var l in usings.OrderBy(s => s).Distinct())
+                foreach (var l in usings.OrderBy(s => s).DistinctNeighbors())
                 {
                     await writer.WriteLineAsync(l);
                 }
@@ -129,11 +133,17 @@ namespace Infra
                     await writer.WriteLineAsync(l);
                 }
 
-                async Task ReadSourceRecAsync(string directory, string name)
+                async Task ReadSourceRecAsync(string directory, string name, Func<Task>? beforeUtils = null)
                 {
-                    var src = await ReadSourceAsync(directory, name);
+                    await ProcessSourceRecAsync(await ReadSourceAsync(directory, name), beforeUtils);
+                }
+
+                async Task ProcessSourceRecAsync(SourceData src, Func<Task>? beforeUtils = null)
+                {
                     usings.AddRange(src.Usings);
                     lines.AddRange(src.Lines.Prepend(""));
+
+                    await (beforeUtils?.Invoke() ?? Task.CompletedTask);
 
                     var utilNames = src.Usings
                         .Where(l => Regex.IsMatch(l, @"^using( static)? Utils\."))
@@ -152,13 +162,14 @@ namespace Infra
                 var names = name.Split(".");
                 var paths = new[] { Paths.ProjectRoot, directory }.Concat(names.SkipLast(1)).Append($"{names.Last()}.cs").ToArray();
                 var lines = (await File.ReadAllLinesAsync(Path.Combine(paths))).AsEnumerable();
-                var usings = lines.TakeWhile(l => Regex.IsMatch(l, @"^\s*(?:using\s.*;)?\s*$")).ToArray();
+                var usings = lines.TakeWhile(l => Regex.IsMatch(l, @"^\s*(?:(?:global\s*)?using\s.*;)?\s*$")).ToArray();
                 lines = lines.Skip(usings.Length);
 
                 return new()
                 {
                     Usings = usings.Select(l => Regex.Replace(l, @"\s+", " "))
                                 .Select(l => Regex.Replace(l, @"^ | $| (?=;)", ""))
+                                .Select(l => Regex.Replace(l, @"^global ", ""))
                                 .Where(l => l.Length != 0),
                     Lines = lines
                 };

@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 using Utils._AutoDictionary;
 using Utils._HeapOperations;
-using Utils._ScannerExtensions;
 using Utils.Extensions._Common;
-
-using static Utils._Commons.Commons;
 
 namespace C1665
 {

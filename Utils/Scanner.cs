@@ -1,7 +1,3 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
-
 using Utils._Verify;
 
 namespace Utils._Scanner
