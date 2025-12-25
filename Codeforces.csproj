@@ -3,8 +3,8 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net9.0</TargetFramework>
+        <LangVersion>13.0</LangVersion>
         <Nullable>Enable</Nullable>
-        <LangVersion>10.0</LangVersion>
         <RootNamespace></RootNamespace>
         <StartupObject>Infra.Program</StartupObject>
         <DefineConstants>LOCAL</DefineConstants>
