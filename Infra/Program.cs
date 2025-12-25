@@ -147,7 +147,7 @@ namespace Infra
                 }
             }
 
-            async Task<(IEnumerable<string> Usings, IEnumerable<string> Lines)> ReadSourceAsync(string directory, string name)
+            async Task<SourceData> ReadSourceAsync(string directory, string name)
             {
                 var names = name.Split(".");
                 var paths = new[] { Paths.ProjectRoot, directory }.Concat(names.SkipLast(1)).Append($"{names.Last()}.cs").ToArray();
@@ -155,13 +155,20 @@ namespace Infra
                 var usings = lines.TakeWhile(l => Regex.IsMatch(l, @"^\s*(?:using\s.*;)?\s*$")).ToArray();
                 lines = lines.Skip(usings.Length);
 
-                return (
-                    Usings: usings.Select(l => Regex.Replace(l, @"\s+", " "))
+                return new()
+                {
+                    Usings = usings.Select(l => Regex.Replace(l, @"\s+", " "))
                                 .Select(l => Regex.Replace(l, @"^ | $| (?=;)", ""))
                                 .Where(l => l.Length != 0),
-                    Lines: lines
-                );
+                    Lines = lines
+                };
             }
+        }
+
+        private readonly struct SourceData()
+        {
+            public IEnumerable<string> Usings { get; init; } = [];
+            public IEnumerable<string> Lines { get; init; } = [];
         }
     }
 }
