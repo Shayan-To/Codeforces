@@ -21,9 +21,10 @@ public static class Commons
     [Conditional("LOCAL")]
     public static void ErrLine(string s)
     {
+        var fg = Console.ForegroundColor;
         Console.ForegroundColor = ConsoleColor.Red;
         Console.Error.WriteLine(s);
-        Console.ForegroundColor = ConsoleColor.White;
+        Console.ForegroundColor = fg;
     }
 
     public static IEnumerable<int> Range(int count)
