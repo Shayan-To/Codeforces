@@ -141,7 +141,13 @@ public static class Program
             async Task ProcessSourceRecAsync(SourceData src, Func<Task>? beforeUtils = null)
             {
                 usings.AddRange(src.Usings);
-                lines.AddRange(src.Lines.Prepend(""));
+
+                var sLines = src.Lines;
+                if (src.FileScopedNamespace != null)
+                {
+                    sLines = sLines.Prepend("{").Prepend(Regex.Replace(src.FileScopedNamespace, ";$", "")).Append("}");
+                }
+                lines.AddRange(sLines.Prepend(""));
 
                 await (beforeUtils?.Invoke() ?? Task.CompletedTask);
 
@@ -162,15 +168,19 @@ public static class Program
             var names = name.Split(".");
             var paths = new[] { Paths.ProjectRoot, directory }.Concat(names.SkipLast(1)).Append($"{names.Last()}.cs").ToArray();
             var lines = (await File.ReadAllLinesAsync(Path.Combine(paths))).AsEnumerable();
-            var usings = lines.TakeWhile(l => Regex.IsMatch(l, @"^\s*(?:(?:global\s*)?using\s.*;)?\s*$")).ToArray();
-            lines = lines.Skip(usings.Length);
+            var usingsAndNamespace = lines.TakeWhile(l => Regex.IsMatch(l, @"^\s*(?:(?:global\s+)?using\s.*;|namespace\s.*;)?\s*$")).ToArray();
+            lines = lines.Skip(usingsAndNamespace.Length);
 
             return new()
             {
-                Usings = usings.Select(l => Regex.Replace(l, @"\s+", " "))
+                FileScopedNamespace = usingsAndNamespace.Where(l => Regex.IsMatch(l, @"^\s*(?:namespace\s.*;)\s*$"))
+                            .Select(l => Regex.Replace(l, @"\s+", " "))
                             .Select(l => Regex.Replace(l, @"^ | $| (?=;)", ""))
-                            .Select(l => Regex.Replace(l, @"^global ", ""))
-                            .Where(l => l.Length != 0),
+                            .SingleOrDefault(),
+                Usings = usingsAndNamespace.Where(l => Regex.IsMatch(l, @"^\s*(?:(?:global\s+)?using\s.*;)\s*$"))
+                            .Select(l => Regex.Replace(l, @"\s+", " "))
+                            .Select(l => Regex.Replace(l, @"^ | $| (?=;)", ""))
+                            .Select(l => Regex.Replace(l, @"^global ", "")),
                 Lines = lines
             };
         }
@@ -178,6 +188,7 @@ public static class Program
 
     private readonly struct SourceData()
     {
+        public string? FileScopedNamespace { get; init; } = null;
         public IEnumerable<string> Usings { get; init; } = [];
         public IEnumerable<string> Lines { get; init; } = [];
     }
