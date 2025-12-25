@@ -1,52 +1,51 @@
 using Utils.Extensions._Common;
 
-namespace C1737
+namespace C1737;
+
+public static class A
 {
-    public static class A
+    public static async Task Main()
     {
-        public static async Task Main()
+        await foreach (var (n, k) in In.ReadWordListAsync<int, int>(await In.ReadWordAsync<int>()))
         {
-            await foreach (var (n, k) in In.ReadWordListAsync<int, int>(await In.ReadWordAsync<int>()))
+            var bMax = n / k;
+            var chars = await In.ReadWordAsync();
+
+            var alph = new int['z' - 'a' + 1];
+
+            foreach (var ch in chars)
             {
-                var bMax = n / k;
-                var chars = await In.ReadWordAsync();
+                alph[ch - 'a'] += 1;
+            }
 
-                var alph = new int['z' - 'a' + 1];
+            ErrLine(Range('z' - 'a' + 1).Select(i => (char)(i + 'a')).JoinToString());
+            ErrLine(alph.JoinToString());
 
-                foreach (var ch in chars)
+            var comps = Range(k).Select(_ => new Compartment()).ToArray();
+
+            for (var ch = 'a'; ch <= 'z'; ch++)
+            {
+                foreach (var comp in comps)
                 {
-                    alph[ch - 'a'] += 1;
-                }
-
-                ErrLine(Range('z' - 'a' + 1).Select(i => (char)(i + 'a')).JoinToString());
-                ErrLine(alph.JoinToString());
-
-                var comps = Range(k).Select(_ => new Compartment()).ToArray();
-
-                for (var ch = 'a'; ch <= 'z'; ch++)
-                {
-                    foreach (var comp in comps)
+                    if (alph[ch - 'a'] == 0 || comp.Count == bMax)
                     {
-                        if (alph[ch - 'a'] == 0 || comp.Count == bMax)
-                        {
-                            comp.Mex = ch < comp.Mex ? ch : comp.Mex;
-                        }
-                        else
-                        {
-                            alph[ch - 'a'] -= 1;
-                            comp.Count += 1;
-                        }
+                        comp.Mex = ch < comp.Mex ? ch : comp.Mex;
+                    }
+                    else
+                    {
+                        alph[ch - 'a'] -= 1;
+                        comp.Count += 1;
                     }
                 }
-
-                OutLine(string.Join("", comps.Select(c => c.Mex)));
             }
-        }
 
-        public class Compartment
-        {
-            public char Mex { get; set; } = 'z';
-            public int Count { get; set; }
+            OutLine(string.Join("", comps.Select(c => c.Mex)));
         }
+    }
+
+    public class Compartment
+    {
+        public char Mex { get; set; } = 'z';
+        public int Count { get; set; }
     }
 }

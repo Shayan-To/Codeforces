@@ -1,13 +1,12 @@
-namespace C2179
+namespace C2179;
+
+public static class A
 {
-    public static class A
+    public static async Task Main()
     {
-        public static async Task Main()
+        await foreach (var (k, x) in In.ReadWordListAsync<int, int>(await In.ReadWordAsync<int>()))
         {
-            await foreach (var (k, x) in In.ReadWordListAsync<int, int>(await In.ReadWordAsync<int>()))
-            {
-                OutLine($"{k * x + 1}");
-            }
+            OutLine($"{k * x + 1}");
         }
     }
 }

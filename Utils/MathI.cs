@@ -1,359 +1,358 @@
 using Utils._Verify;
 
-namespace Utils._MathI
+namespace Utils._MathI;
+
+public static class MathI
 {
-    public static class MathI
+
+    /// <returns>
+    /// The reminder, between 0 and B - 1.
+    /// </returns>
+    public static int NonNegMod(int A, int B)
     {
-
-        /// <returns>
-        /// The reminder, between 0 and B - 1.
-        /// </returns>
-        public static int NonNegMod(int A, int B)
+        A %= B;
+        if (A >= 0)
         {
-            A %= B;
-            if (A >= 0)
-            {
-                return A;
-            }
-
-            return A + Math.Abs(B);
+            return A;
         }
 
-        /// <returns>
-        /// The reminder, between 0 and B - 1.
-        /// </returns>
-        public static long NonNegMod(long A, long B)
-        {
-            A %= B;
-            if (A >= 0)
-            {
-                return A;
-            }
+        return A + Math.Abs(B);
+    }
 
-            return A + Math.Abs(B);
+    /// <returns>
+    /// The reminder, between 0 and B - 1.
+    /// </returns>
+    public static long NonNegMod(long A, long B)
+    {
+        A %= B;
+        if (A >= 0)
+        {
+            return A;
         }
 
-        /// <returns>
-        /// The reminder, between 1 and B.
-        /// </returns>
-        public static int PosMod(int A, int B)
+        return A + Math.Abs(B);
+    }
+
+    /// <returns>
+    /// The reminder, between 1 and B.
+    /// </returns>
+    public static int PosMod(int A, int B)
+    {
+        A %= B;
+        if (A > 0)
         {
-            A %= B;
-            if (A > 0)
-            {
-                return A;
-            }
-
-            if (B > 0)
-            {
-                return A + B;
-            }
-
-            return A - B;
+            return A;
         }
 
-        /// <returns>
-        /// The reminder, between 1 and B.
-        /// </returns>
-        public static long PosMod(long A, long B)
+        if (B > 0)
         {
-            A %= B;
-            if (A > 0)
-            {
-                return A;
-            }
-
-            if (B > 0)
-            {
-                return A + B;
-            }
-
-            return A - B;
+            return A + B;
         }
 
-        public static int Power(int a, int b)
-        {
-            Verify.FalseArg(b < 0, nameof(b), $"{nameof(b)} must be non-negative.");
-            var r = 1;
-            while (b != 0)
-            {
-                if ((b & 1) == 1)
-                {
-                    r *= a;
-                }
+        return A - B;
+    }
 
-                a *= a;
-                b >>= 1;
-            }
-            return r;
+    /// <returns>
+    /// The reminder, between 1 and B.
+    /// </returns>
+    public static long PosMod(long A, long B)
+    {
+        A %= B;
+        if (A > 0)
+        {
+            return A;
         }
 
-        public static long Power(long a, int b)
+        if (B > 0)
         {
-            Verify.FalseArg(b < 0, nameof(b), $"{nameof(b)} must be non-negative.");
-            var r = 1L;
-            while (b != 0)
-            {
-                if ((b & 1) == 1)
-                {
-                    r *= a;
-                }
-
-                a *= a;
-                b >>= 1;
-            }
-            return r;
+            return A + B;
         }
 
-        public static (int Root, int Remainder) SquareRoot(int a)
+        return A - B;
+    }
+
+    public static int Power(int a, int b)
+    {
+        Verify.FalseArg(b < 0, nameof(b), $"{nameof(b)} must be non-negative.");
+        var r = 1;
+        while (b != 0)
         {
-            Verify.FalseArg(a < 0, nameof(a), $"{nameof(a)} must be non-negative.");
-
-            var aRev = 0;
-            var t = a;
-            while (t != 0)
+            if ((b & 1) == 1)
             {
-                aRev = (aRev << 2) | (t & 0b11);
-                t >>= 2;
+                r *= a;
             }
 
-            var remainder = 0;
-            var root = 0;
-            while (a != 0)
+            a *= a;
+            b >>= 1;
+        }
+        return r;
+    }
+
+    public static long Power(long a, int b)
+    {
+        Verify.FalseArg(b < 0, nameof(b), $"{nameof(b)} must be non-negative.");
+        var r = 1L;
+        while (b != 0)
+        {
+            if ((b & 1) == 1)
             {
-                remainder = (remainder << 2) | (aRev & 0b11);
-
-                aRev >>= 2;
-                a >>= 2;
-
-                root <<= 1;
-                var root2 = (root << 1) | 1;
-
-                if (remainder >= root2)
-                {
-                    root |= 1;
-                    remainder -= root2;
-                }
+                r *= a;
             }
 
-            return (root, remainder);
+            a *= a;
+            b >>= 1;
+        }
+        return r;
+    }
+
+    public static (int Root, int Remainder) SquareRoot(int a)
+    {
+        Verify.FalseArg(a < 0, nameof(a), $"{nameof(a)} must be non-negative.");
+
+        var aRev = 0;
+        var t = a;
+        while (t != 0)
+        {
+            aRev = (aRev << 2) | (t & 0b11);
+            t >>= 2;
         }
 
-        public static (long Root, long Remainder) SquareRoot(long a)
+        var remainder = 0;
+        var root = 0;
+        while (a != 0)
         {
-            Verify.FalseArg(a < 0, nameof(a), $"{nameof(a)} must be non-negative.");
+            remainder = (remainder << 2) | (aRev & 0b11);
 
-            var aRev = 0L;
-            var t = a;
-            while (t != 0)
+            aRev >>= 2;
+            a >>= 2;
+
+            root <<= 1;
+            var root2 = (root << 1) | 1;
+
+            if (remainder >= root2)
             {
-                aRev = (aRev << 2) | (t & 0b11);
-                t >>= 2;
+                root |= 1;
+                remainder -= root2;
             }
-
-            var remainder = 0L;
-            var root = 0L;
-            while (a != 0)
-            {
-                remainder = (remainder << 2) | (aRev & 0b11);
-
-                aRev >>= 2;
-                a >>= 2;
-
-                root <<= 1;
-                var root2 = (root << 1) | 1;
-
-                if (remainder >= root2)
-                {
-                    root |= 1;
-                    remainder -= root2;
-                }
-            }
-
-            return (root, remainder);
         }
 
-        public static int LeastPowerOfTwoOnMin(int min)
-        {
-            if (min < 1)
-            {
-                return 1;
-            }
+        return (root, remainder);
+    }
 
-            // If `min` is a power of two, we should return `min`, otherwise, `min * 2`.
-            var t = (min - 1) & min;
+    public static (long Root, long Remainder) SquareRoot(long a)
+    {
+        Verify.FalseArg(a < 0, nameof(a), $"{nameof(a)} must be non-negative.");
+
+        var aRev = 0L;
+        var t = a;
+        while (t != 0)
+        {
+            aRev = (aRev << 2) | (t & 0b11);
+            t >>= 2;
+        }
+
+        var remainder = 0L;
+        var root = 0L;
+        while (a != 0)
+        {
+            remainder = (remainder << 2) | (aRev & 0b11);
+
+            aRev >>= 2;
+            a >>= 2;
+
+            root <<= 1;
+            var root2 = (root << 1) | 1;
+
+            if (remainder >= root2)
+            {
+                root |= 1;
+                remainder -= root2;
+            }
+        }
+
+        return (root, remainder);
+    }
+
+    public static int LeastPowerOfTwoOnMin(int min)
+    {
+        if (min < 1)
+        {
+            return 1;
+        }
+
+        // If `min` is a power of two, we should return `min`, otherwise, `min * 2`.
+        var t = (min - 1) & min;
+        if (t == 0)
+        {
+            return min;
+        }
+
+        min = t;
+
+        while (true)
+        {
+            t = (min - 1) & min;
             if (t == 0)
             {
-                return min;
+                return min << 1;
             }
 
             min = t;
+        }
+    }
 
-            while (true)
-            {
-                t = (min - 1) & min;
-                if (t == 0)
-                {
-                    return min << 1;
-                }
-
-                min = t;
-            }
+    public static long LeastPowerOfTwoOnMin(long min)
+    {
+        if (min < 1)
+        {
+            return 1;
         }
 
-        public static long LeastPowerOfTwoOnMin(long min)
+        // If `min` is a power of two, we should return `min`, otherwise, `min * 2`.
+        var t = (min - 1) & min;
+        if (t == 0)
         {
-            if (min < 1)
-            {
-                return 1;
-            }
+            return min;
+        }
 
-            // If `min` is a power of two, we should return `min`, otherwise, `min * 2`.
-            var t = (min - 1) & min;
+        min = t;
+
+        while (true)
+        {
+            t = (min - 1) & min;
             if (t == 0)
             {
-                return min;
+                return min << 1;
             }
 
             min = t;
+        }
+    }
 
-            while (true)
-            {
-                t = (min - 1) & min;
-                if (t == 0)
-                {
-                    return min << 1;
-                }
-
-                min = t;
-            }
+    public static int FloorDiv(int a, int b)
+    {
+        if (b < 0)
+        {
+            a = -a;
+            b = -b;
+        }
+        if (a >= 0 || a % b == 0)
+        {
+            return a / b;
         }
 
-        public static int FloorDiv(int a, int b)
-        {
-            if (b < 0)
-            {
-                a = -a;
-                b = -b;
-            }
-            if (a >= 0 || a % b == 0)
-            {
-                return a / b;
-            }
+        return a / b - 1;
+    }
 
-            return a / b - 1;
+    public static long FloorDiv(long a, long b)
+    {
+        if (b < 0)
+        {
+            a = -a;
+            b = -b;
+        }
+        if (a >= 0 || a % b == 0)
+        {
+            return a / b;
         }
 
-        public static long FloorDiv(long a, long b)
-        {
-            if (b < 0)
-            {
-                a = -a;
-                b = -b;
-            }
-            if (a >= 0 || a % b == 0)
-            {
-                return a / b;
-            }
+        return a / b - 1;
+    }
 
-            return a / b - 1;
+    public static int CeilDiv(int a, int b)
+    {
+        if (b < 0)
+        {
+            a = -a;
+            b = -b;
+        }
+        if (a < 0 || a % b == 0)
+        {
+            return a / b;
         }
 
-        public static int CeilDiv(int a, int b)
-        {
-            if (b < 0)
-            {
-                a = -a;
-                b = -b;
-            }
-            if (a < 0 || a % b == 0)
-            {
-                return a / b;
-            }
+        return a / b + 1;
+    }
 
-            return a / b + 1;
+    public static long CeilDiv(long a, long b)
+    {
+        if (b < 0)
+        {
+            a = -a;
+            b = -b;
+        }
+        if (a < 0 || a % b == 0)
+        {
+            return a / b;
         }
 
-        public static long CeilDiv(long a, long b)
-        {
-            if (b < 0)
-            {
-                a = -a;
-                b = -b;
-            }
-            if (a < 0 || a % b == 0)
-            {
-                return a / b;
-            }
+        return a / b + 1;
+    }
 
-            return a / b + 1;
+    public static int GreatestCommonDivisor(int a, int b)
+    {
+        if (b < 0)
+        {
+            b = -b;
+        }
+        if (a < 0)
+        {
+            a = -a;
         }
 
-        public static int GreatestCommonDivisor(int a, int b)
+        while (b != 0)
         {
-            if (b < 0)
-            {
-                b = -b;
-            }
-            if (a < 0)
-            {
-                a = -a;
-            }
+            var c = a % b;
+            a = b;
+            b = c;
+        }
+        return a;
+    }
 
-            while (b != 0)
-            {
-                var c = a % b;
-                a = b;
-                b = c;
-            }
-            return a;
+    public static long GreatestCommonDivisor(long a, long b)
+    {
+        if (b < 0)
+        {
+            b = -b;
+        }
+        if (a < 0)
+        {
+            a = -a;
         }
 
-        public static long GreatestCommonDivisor(long a, long b)
+        while (b != 0)
         {
-            if (b < 0)
-            {
-                b = -b;
-            }
-            if (a < 0)
-            {
-                a = -a;
-            }
-
-            while (b != 0)
-            {
-                var c = a % b;
-                a = b;
-                b = c;
-            }
-            return a;
+            var c = a % b;
+            a = b;
+            b = c;
         }
+        return a;
+    }
 
-        public static int LeastCommonMultiple(int a, int b)
-        {
-            return a / GreatestCommonDivisor(a, b) * b;
-        }
+    public static int LeastCommonMultiple(int a, int b)
+    {
+        return a / GreatestCommonDivisor(a, b) * b;
+    }
 
-        public static long LeastCommonMultiple(long a, long b)
-        {
-            return a / GreatestCommonDivisor(a, b) * b;
-        }
+    public static long LeastCommonMultiple(long a, long b)
+    {
+        return a / GreatestCommonDivisor(a, b) * b;
+    }
 
-        public static (int Log, long Remainder) Logarithm(long n, long @base)
+    public static (int Log, long Remainder) Logarithm(long n, long @base)
+    {
+        var remainder = 0L;
+        var power = 1L;
+        var log = 0;
+        while (n != 0)
         {
-            var remainder = 0L;
-            var power = 1L;
-            var log = 0;
-            while (n != 0)
-            {
 #pragma warning disable IDE0047 // Parentheses can be removed
-                remainder += (n % @base) * power;
+            remainder += (n % @base) * power;
 #pragma warning restore IDE0047 // Parentheses can be removed
-                n /= @base;
-                power *= @base;
-                log += 1;
-            }
-            return (log, remainder);
+            n /= @base;
+            power *= @base;
+            log += 1;
         }
+        return (log, remainder);
     }
 }

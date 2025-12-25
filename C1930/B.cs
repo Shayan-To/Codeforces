@@ -1,21 +1,20 @@
 using Utils.Extensions._Common;
 
-namespace C1930
+namespace C1930;
+
+public static class B
 {
-    public static class B
+    public static async Task Main()
     {
-        public static async Task Main()
+        await foreach (var n in In.ReadWordListAsync<int>(await In.ReadWordAsync<int>()))
         {
-            await foreach (var n in In.ReadWordListAsync<int>(await In.ReadWordAsync<int>()))
+            var h = n / 2;
+            var r = RangeSC(1, h).SelectMany(i => new[] { i, i + h });
+            if (n % 2 == 1)
             {
-                var h = n / 2;
-                var r = RangeSC(1, h).SelectMany(i => new[] { i, i + h });
-                if (n % 2 == 1)
-                {
-                    r = r.Append(n);
-                }
-                OutLine($"{r.JoinToString()}");
+                r = r.Append(n);
             }
+            OutLine($"{r.JoinToString()}");
         }
     }
 }
